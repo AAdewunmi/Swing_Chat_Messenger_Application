@@ -35,7 +35,14 @@ public class Server {
 
     }
 
-    class Client_Handler implements Runnable{
+    static class Client_Handler implements Runnable{
+
+        Socket connection;
+        PrintWriter output;
+        BufferedReader input;
+        String clientName;
+
+
 
         @Override
         public void run() {
