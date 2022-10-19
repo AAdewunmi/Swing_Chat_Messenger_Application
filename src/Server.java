@@ -42,7 +42,12 @@ public class Server {
         BufferedReader input;
         String clientName;
 
-
+        public Client_Handler(String clientName, Socket connection, PrintWriter output, BufferedReader input) {
+            this.connection = connection;
+            this.output = output;
+            this.input = input;
+            this.clientName = clientName;
+        }
 
         @Override
         public void run() {
