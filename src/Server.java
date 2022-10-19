@@ -49,6 +49,10 @@ public class Server {
             this.clientName = clientName;
         }
 
+        String receiveMessage() throws IOException{
+            return input.readLine();
+        }
+
         @Override
         public void run() {
 
