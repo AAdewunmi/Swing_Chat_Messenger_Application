@@ -53,6 +53,10 @@ public class Server {
             return input.readLine();
         }
 
+        void sendMessage(String message){
+            output.println(message);
+        }
+
         @Override
         public void run() {
 
