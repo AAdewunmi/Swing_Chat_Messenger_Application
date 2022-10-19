@@ -57,6 +57,14 @@ public class Server {
             output.println(message);
         }
 
+        void closeStreams() throws IOException{
+            output.close();
+            input.close();
+            connection.close();
+            Server.sockets.remove(this);
+            System.out.println("Current Client Count - " + Server.sockets.size());
+        }
+
         @Override
         public void run() {
 
