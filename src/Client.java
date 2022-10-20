@@ -1,3 +1,4 @@
+import javax.swing.*;
 
 /**
  * Client Class
@@ -16,4 +17,10 @@ public class Client {
         clientSetUp.startRunning();*/
 
     }
+}
+
+class Client_SetUp extends JFrame{
+
+
+
 }
