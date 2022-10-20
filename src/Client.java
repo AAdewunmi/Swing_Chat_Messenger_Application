@@ -1,4 +1,7 @@
 import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 /**
  * Client Class
@@ -21,6 +24,15 @@ public class Client {
 
 class Client_SetUp extends JFrame{
 
+    private JTextField userText;
+    private JTextArea chatWindow;
+    private PrintWriter output;
+    private BufferedReader input;
+    private String message;
+    private String serverIP;
+    private Socket connection;
+    private String name;
+    private JFrame f1, f2;
 
 
 }
