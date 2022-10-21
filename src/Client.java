@@ -146,4 +146,15 @@ class Client_SetUp extends JFrame{
         }
     }
 
+    private void closeStreams(){
+        try{
+            output.close();
+            input.close();
+            connection.close();
+        }catch(IOException e){
+            System.out.println("Error: closeStreams()");
+            e.printStackTrace();
+        }
+    }
+
 } // End Client_SetUp
