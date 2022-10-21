@@ -2,10 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -129,7 +126,12 @@ class Client_SetUp extends JFrame{
         /*showMessage("Attention Connection ... \n");
         connection = new Socket(InetAddress.getByName(serverIP), XXXXX);
         showMessage("Connected to: " + connection.getInetAddress().getHostName());*/
+    }
 
+    private void setupStreams() throws IOException{
+        output = new PrintWriter(connection.getOutputStream(), true);
+        input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        showMessage("\n Your streams are now good to go \n");
     }
 
 } // End Client_SetUp
