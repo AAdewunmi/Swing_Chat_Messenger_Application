@@ -157,4 +157,13 @@ class Client_SetUp extends JFrame{
         }
     }
 
+    private void sendMessage(String message){
+        try{
+            output.println(name + " - " + message);
+            showMessage("\n" + name + " - " + message);
+        }catch(Exception e){
+            chatWindow.append("\n Message not sent, some error occurred!");
+        }
+    }
+
 } // End Client_SetUp
