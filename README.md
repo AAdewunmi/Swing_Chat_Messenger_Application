@@ -1,32 +1,91 @@
-# UNDER CONSTRUCTION!
-
 # Project Title: 
 
-Swing Chat Messenger Application
+A Java Chat Messenger Application.
 
-## 1. What is the project?
+## 1. Project Description:
 
-Swing-Based Chat Messenger Application supporting Ngrok and Multirun functionality.
+A Chat Messenger Application, built using Java 8, and Java Swing for GUI. 
+
+In addition, it supports Ngrok and Multirun functionality.
 
 ## 2. Tech Stack:
 
 * Language - Python
-* IDE - Pycharm (Plugin Multirun)
-* API - Ngrok 
+* IDE - Intellij (Plugin Multirun)
+* API - Ngrok (Port Forwarding System)
 
-## 3. What is the MVP?
+## 3. Install Project:
 
-The minimal viable product is a TCP/IP Client-Server application that renders in a Java Swing GUI, which can perform chat message exchange operations between users.
+i. Clone the git repo
 
-## 4. What are the sprinkles (Nice to haves)?
+```
+https://github.com/AAdewunmi/Swing_Chat_Messenger_Application.git
+```
 
-The sprinkles for this project are styling the Java Swing GUI.
+ii. Open project folder
 
-## 5. When will the project be complete?
+iii. Explore
 
-The project will be complete once all the MVP features have been implemented and the Java Swing GUI has been styled.
 
-## 6. Adapted from:
+## 4. Register and Install Ngrok (Global, OSX):
+
+
+i. Installing ngrok on OSX (Read Ngrok documentation and Github Gist below):
+
+https://gist.github.com/wosephjeber/aa174fb851dfe87e644e
+
+(https://ngrok.com/docs/getting-started)
+
+ii. Access Ngrok TCP tunnel using Terminal: 
+
+Run > $ ngrok tcp 2020
+
+> TERMINAL ERROR MESSAGE!
+
+TCP tunnels are only available after you sign up.
+Sign up at: https://dashboard.ngrok.com/signup
+
+If you have already signed up, make sure your authtoken is installed.
+Your authtoken is available on your dashboard: https://dashboard.ngrok.com/get-started/your-authtoken 
+
+Run > $ ngrok authtoken [TOKEN]
+
+Re-Run > $ ngrok tcp 2020
+
+![This is an image](src/demo/ngrok_screenshot_1.png)
+
+iii. Use Ngrok as a service in Intellij IDE (YouTube Video):
+
+https://www.youtube.com/watch?v=eMt29lTPh8I
+
+## 5. How To Use:
+
+i. Run Server Class, then Client Class.
+
+ii. Run Server and *** multiple Client configs on "localhost"/Port Number 2020.
+
+iii. Run Server and *** multiple Client configs on Ngrok-as-a-service (Download plugin) on "localhost"/Port Number 2020.
+
+iv. Run Server and *** multiple Client configs on Multirun-as-a-service (Download plugin) on "localhost"/Port Number 2020.
+
+v. Run Server config on "localhost"/Port 2020, Run multiple *** Client configs using NGROK forwarding service (See commented code in Client and Server Class). Sample Ngrok forwarding address: "x.tcp.ngrok.io", port number XXXXX.
+
+* multiple Client configs: To create multiple clients using Intellij, you need to go to 
+-> Edit Configurations
+-> Click Client
+-> Copy Configuration
+-> Client(1) created. This process can be repeated to create as many clients as required.
+
+
+## 6. Demo (Chat Screenshot):
+
+![This is an image](src/images/chat_screenshot.jpg )
+
+## 7. Contribution:
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## 8. Adapted from:
 
 UDEMY: Java Development Mega Course: Build Projects Practically
 
