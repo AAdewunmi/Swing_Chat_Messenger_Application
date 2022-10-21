@@ -6,7 +6,9 @@ import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * Client Class
@@ -115,6 +117,19 @@ class Client_SetUp extends JFrame{
         }finally{
             closeStreams();
         }
+    }
+
+    private void connectToServer() throws IOException {
+        // Localhost connection
+        showMessage("Attention Connection ... \n");
+        connection = new Socket(InetAddress.getByName(serverIP), 2020);
+        showMessage("Connected to: " + connection.getInetAddress().getHostName());
+
+        // Ngrok connection
+        /*showMessage("Attention Connection ... \n");
+        connection = new Socket(InetAddress.getByName(serverIP), XXXXX);
+        showMessage("Connected to: " + connection.getInetAddress().getHostName());*/
+
     }
 
 } // End Client_SetUp
