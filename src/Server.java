@@ -13,7 +13,7 @@ import java.util.Vector;
 
 public class Server {
 
-    static Vector<Client_Handler> sockets = new Vector<Client_Handler>();
+    static Vector<Client_Handler> sockets = new Vector<>();
 
     public static void main(String[] args) throws IOException {
         ServerSocket socket = new ServerSocket(2020);
@@ -30,7 +30,6 @@ public class Server {
             Thread thread = new Thread(clientHandler);
             thread.start();
             ++i;
-
         }
     }
 }
@@ -71,9 +70,9 @@ class Client_Handler implements Runnable{
             while(true){
                 String message = receiveMessage();
                 if (message.endsWith("Client_wants_to_end_the_connection")) {
-                    message = message.substring(0, message.indexOf('-')) + " has left the Server";
+                    message = message.substring(0, message.indexOf('-')) + " has left the Chat!";
                     for (Client_Handler clientHandler: Server.sockets){
-                        if (!clientHandler.clientName.equals(clientName)) {clientHandler.sendMessage(message);};
+                        if (!clientHandler.clientName.equals(clientName)) {clientHandler.sendMessage(message);}
                     }
                     closeStreams();
                     break;

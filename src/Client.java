@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  * Client Class
@@ -28,15 +27,15 @@ public class Client {
 
 class Client_SetUp extends JFrame{
 
-    private JTextField userText;
-    private JTextArea chatWindow;
+    private final JTextField userText;
+    private final JTextArea chatWindow;
     private PrintWriter output;
     private BufferedReader input;
-    private String message;
-    private String serverIP;
+    private final String serverIP;
     private Socket connection;
     private String name;
-    private JFrame f1, f2;
+    private final JFrame f1;
+    private final JFrame f2;
 
     public Client_SetUp(String host){
 
@@ -71,21 +70,15 @@ class Client_SetUp extends JFrame{
         Button buttonEnd = new Button("End");
         userText.setEditable(true);
         chatWindow.setEditable(false);
-        userText.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sendMessage(e.getActionCommand());
-                userText.setText("");
-            }
+        userText.addActionListener(e -> {
+            sendMessage(e.getActionCommand());
+            userText.setText("");
         });
-        buttonEnd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sendMessage("Client_wants_to_end_the_connection");
-                CloseStreams();
-                f2.dispose();
-                System.exit(0);
-            }
+        buttonEnd.addActionListener(e -> {
+            sendMessage("Client_wants_to_end_the_connection");
+            closeStreams();
+            f2.dispose();
+            System.exit(0);
         });
 
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -137,7 +130,7 @@ class Client_SetUp extends JFrame{
     private void whileChatting() throws IOException{
         while(true){
             try{
-                message = (String) input.readLine();
+                String message = input.readLine();
                 showMessage("\n" + message);
             }catch(Exception e){
                 showMessage("Some Error Occurred: whileChatting()");
@@ -164,6 +157,10 @@ class Client_SetUp extends JFrame{
         }catch(Exception e){
             chatWindow.append("\n Message not sent, some error occurred!");
         }
+    }
+
+    private void showMessage(final String string){
+        SwingUtilities.invokeLater(() -> chatWindow.append(string));
     }
 
 } // End Client_SetUp
