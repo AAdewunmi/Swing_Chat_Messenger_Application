@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.EOFException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -99,5 +101,20 @@ class Client_SetUp extends JFrame{
         f2.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
     } // End Constructor
+
+    public void startRunning(){
+        try{
+            connectToServer();
+            setupStreams();
+            whileChatting();
+        }catch(EOFException e){
+            showMessage("\n Server not found!");
+        }catch(IOException e){
+            System.out.println("Error startRunning()");
+            e.printStackTrace();
+        }finally{
+            closeStreams();
+        }
+    }
 
 } // End Client_SetUp
