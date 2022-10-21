@@ -10,7 +10,7 @@ In addition, it supports Ngrok and Multirun functionality.
 
 ## 2. Tech Stack:
 
-* Language - Python
+* Language - Java 8
 * IDE - Intellij (Plugin Multirun)
 * API - Ngrok (Port Forwarding System)
 
@@ -32,9 +32,10 @@ iii. Explore
 
 i. Installing ngrok on OSX (Read Ngrok documentation and Github Gist below):
 
+https://ngrok.com/docs/getting-started
+
 https://gist.github.com/wosephjeber/aa174fb851dfe87e644e
 
-(https://ngrok.com/docs/getting-started)
 
 ii. Access Ngrok TCP tunnel using Terminal: 
 
@@ -52,7 +53,7 @@ Run > $ ngrok authtoken [TOKEN]
 
 Re-Run > $ ngrok tcp 2020
 
-![This is an image](src/demo/ngrok_screenshot_1.png)
+![This is an image](src/images/ngrok_screenshot_1.png)
 
 iii. Use Ngrok as a service in Intellij IDE (YouTube Video):
 
