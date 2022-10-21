@@ -7,93 +7,83 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 /**
- * Client Class
- * Client Socket running at port 2030
- * Ngrok Config: Server Address -> "X.tcp.ngrok.io" // Port Number ->
- */
-public class Client {
-    public static void main(String[] args) {
+* Client Class
+* Client Socket running at port 2020
+* Ngrok Config: Server Address -> "X.tcp.ngrok.io" // Port Number ->
+*/
 
-        // Localhost Configuration
-        Client_SetUp clientSetUp = new Client_SetUp("localhost");
-        clientSetUp.startRunning();
-
-        // Ngrok Configuration
-        /*Client_SetUp clientSetUp = new Client_SetUp("X.tcp.ngrok.io");
-        clientSetUp.startRunning();*/
-
-    }
-}
-
-class Client_SetUp extends JFrame{
-
-    private final JTextField userText;
-    private final JTextArea chatWindow;
-    // private PrintWriter output;
-    private BufferedWriter output;
+class Client_setup extends JFrame{
+    private JTextField userText;
+    private JTextArea chatWindow;
+    private PrintWriter output;
     private BufferedReader input;
-    private final String serverIP;
+    private String message;
+    private String serverIP;
     private Socket connection;
     private String name;
-    private final JFrame f1;
-    private final JFrame f2;
+    private JFrame f1,f2;
 
-    public Client_SetUp(String host){
-
-        f1 = new JFrame();
-        serverIP = host;
-        f1.setSize(300, 500);
-        JLabel jLabel = new JLabel("Enter Your Name: ");
-        JTextField jTextField = new JTextField(20);
-        JButton jButton = new JButton("Submit");
-        JPanel jPanel = new JPanel();
-        jPanel.add(jLabel);
-        jPanel.add(jTextField);
-        jPanel.add(jButton);
-        f1.add(jPanel);
-
-        jButton.addActionListener(new ActionListener() {
+    public Client_setup(String host){
+        f1=new JFrame();
+        serverIP=host;
+        f1.setSize(300,500);
+        JLabel l1=new JLabel("Enter you name:");
+        JTextField tf=new JTextField(16);
+        JButton b=new JButton("Submit");
+        JPanel p=new JPanel();
+        p.add(l1);
+        p.add(tf);
+        p.add(b);
+        f1.add(p);
+        b.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                name = jTextField.getText();
+                name=tf.getText();
                 f1.setVisible(false);
                 f1.dispose();
                 f2.setVisible(true);
             }
         });
-
         f1.setVisible(true);
         f1.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        f2 = new JFrame();
-        chatWindow = new JTextArea();
-        userText = new JTextField();
-        Button buttonEnd = new Button("End");
+
+        f2=new JFrame();
+        chatWindow=new JTextArea();
+        userText=new JTextField();
+        Button end=new Button("End");
         userText.setEditable(true);
         chatWindow.setEditable(false);
-        userText.addActionListener(e -> {
-            sendMessage(e.getActionCommand());
-            userText.setText("");
+        userText.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        sendMessage(e.getActionCommand());
+                        userText.setText("");
+                    }
+                }
+        );
+        end.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sendMessage("Client_wants_to_end_the_connection");
+                CloseStreams();
+                f2.dispose();
+                System.exit(0);
+            }
         });
-        buttonEnd.addActionListener(e -> {
-            sendMessage("Client_wants_to_end_the_connection");
-            closeStreams();
-            f2.dispose();
-            System.exit(0);
-        });
-
         JPanel mainPanel = new JPanel(new BorderLayout());
         JPanel bottomPanel = new JPanel(new BorderLayout());
         mainPanel.add(bottomPanel, BorderLayout.PAGE_END);
         mainPanel.add(new JScrollPane(chatWindow), BorderLayout.CENTER);
         bottomPanel.add(userText, BorderLayout.CENTER);
-        bottomPanel.add(buttonEnd, BorderLayout.LINE_END);
+        bottomPanel.add(end, BorderLayout.LINE_END);
         f2.getContentPane().add(mainPanel);
-        f2.setSize(300, 500);
+        f2.setSize(300,500);
         f2.setVisible(false);
         f2.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }// end Constructor
 
-    } // End Constructor
 
     public void startRunning(){
         try{
@@ -101,71 +91,85 @@ class Client_SetUp extends JFrame{
             setupStreams();
             whileChatting();
         }catch(EOFException e){
-            showMessage("\n Server not found!");
+            showMessage("\n Server not Found");
         }catch(IOException e){
-            System.out.println("Error startRunning()");
             e.printStackTrace();
-        }finally{
-            closeStreams();
+        }
+        finally{
+            CloseStreams();
         }
     }
 
-    private void connectToServer() throws IOException {
-        // Localhost connection
-        showMessage("Attention Connection ... \n");
-        connection = new Socket(InetAddress.getByName(serverIP), 2030);
-        showMessage("Connected to: " + connection.getInetAddress().getHostName());
 
-        // Ngrok connection
-        /*showMessage("Attention Connection ... \n");
-        connection = new Socket(InetAddress.getByName(serverIP), XXXXX);
-        showMessage("Connected to: " + connection.getInetAddress().getHostName());*/
+    private void connectToServer() throws IOException{
+        showMessage("Attempting Connection..\n");
+        // connection= new Socket(InetAddress.getByName(serverIP),14205);
+        connection= new Socket(InetAddress.getByName(serverIP),2020);
+        showMessage("Connected to: "+connection.getInetAddress().getHostName());
     }
 
+
     private void setupStreams() throws IOException{
-        // output = new PrintWriter(connection.getOutputStream(), true);
-        output = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-        input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        output=new PrintWriter(connection.getOutputStream(),true);
+        input=new BufferedReader(new InputStreamReader(connection.getInputStream()));
         showMessage("\n Your streams are now good to go \n");
     }
 
+
     private void whileChatting() throws IOException{
-        boolean keepLooping = true;
-        while(keepLooping){
+        while(true)
+        {
             try{
-                String message = input.readLine();
-                showMessage("\n" + message);
+                message=(String)input.readLine();
+                showMessage("\n"+message);
             }catch(Exception e){
-                showMessage("Some Error Occurred: whileChatting()");
-                e.printStackTrace();
+                showMessage("Some Error Occurred");
             }
-            keepLooping = false;
+
         }
     }
 
-    private void closeStreams(){
-        try{
+
+    private void CloseStreams(){
+        try {
             output.close();
             input.close();
             connection.close();
         }catch(IOException e){
-            System.out.println("Error: closeStreams()");
             e.printStackTrace();
         }
     }
 
+
     private void sendMessage(String message){
         try{
-            // output.println(name + " - " + message);
-            output.write(name + " - " + message);
-            showMessage("\n" + name + " - " + message);
+            output.println(name+"- "+message);
+            showMessage("\n"+name+"- "+message);
         }catch(Exception e){
-            chatWindow.append("\n Message not sent, some error occurred!");
+            chatWindow.append("\n Message not sent,some error occurred");
         }
+
     }
 
-    private void showMessage(final String string){
-        SwingUtilities.invokeLater(() -> chatWindow.append(string));
+
+    private void showMessage(final String s) {
+        SwingUtilities.invokeLater(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        chatWindow.append(s);
+                    }
+                }
+        );
     }
 
-} // End Client_SetUp
+}
+
+public class Client {
+    public static void main(String args[]){
+        // Client_setup CLIENT=new Client_setup("6.tcp.ngrok.io");
+        Client_setup CLIENT=new Client_setup("localhost");
+        CLIENT.startRunning();
+    }
+}
+

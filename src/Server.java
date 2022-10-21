@@ -7,84 +7,92 @@ import java.net.Socket;
 import java.util.Vector;
 
 /**
- * Server Class
- * Server Socket running at port 2030
- */
+* Server Class
+* Server Socket running at port 2020
+*/
 
-public class Server {
-
-    static Vector<Client_Handler> sockets = new Vector<>();
-
-    public static void main(String[] args) throws IOException {
-        ServerSocket socket = new ServerSocket(2030);
-        int i = 0;
-        System.out.println("Server is waiting for Connections!");
+public class Server
+{
+    //Vector to hold each instance of class client_handler(using vectors instead of lists because vectors are thread safe)
+    static Vector<Client_Handler> sockets=new Vector<Client_Handler>();
+    public static void main(String args[]) throws IOException
+    {
+        //Server Socket running at port 2020
+        ServerSocket socket=new ServerSocket(2020);
+        int i=0;
+        System.out.println("Server is waiting for Connections");
         while(true){
-            System.out.println("Current Client Count -> " + sockets.size());
-            Socket connection = socket.accept();
-            String clientName = "Client - " + i;
-            PrintWriter output = new PrintWriter(connection.getOutputStream(), true);
-            BufferedReader input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            Client_Handler clientHandler = new Client_Handler(clientName, connection, output, input);
-            sockets.add(clientHandler);
-            Thread thread = new Thread(clientHandler);
-            thread.start();
+            System.out.println("Current Client Count- "+ sockets.size());
+            Socket connection =socket.accept();
+            String client_name="Client-"+i;
+            //OUTPUT STREAM
+            PrintWriter output=new PrintWriter(connection.getOutputStream(),true);
+            //INPUT STREAM
+            BufferedReader input=new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            Client_Handler c=new Client_Handler(client_name,connection,output,input);
+            sockets.add(c);
+            Thread t =new Thread(c);
+            t.start();
             ++i;
         }
     }
 }
 
-class Client_Handler implements Runnable{
 
+class Client_Handler implements Runnable{
     Socket connection;
     PrintWriter output;
     BufferedReader input;
-    String clientName;
+    String client_name;
 
-    public Client_Handler(String clientName, Socket connection, PrintWriter output, BufferedReader input) {
-        this.connection = connection;
-        this.output = output;
-        this.input = input;
-        this.clientName = clientName;
+
+    Client_Handler(String client_name,Socket connection,PrintWriter output,BufferedReader input) {
+        this.connection=connection;
+        this.output=output;
+        this.input=input;
+        this.client_name=client_name;
     }
 
-    String receiveMessage() throws IOException{
+
+    String Receive() throws IOException {
         return input.readLine();
     }
 
-    void sendMessage(String message){
-        output.println(message);
+
+    void Send(String msg) {
+        output.println(msg);
     }
 
-    void closeStreams() throws IOException{
+
+    void CloseStreams() throws IOException {
         output.close();
         input.close();
         connection.close();
         Server.sockets.remove(this);
-        System.out.println("Current Client Count - " + Server.sockets.size());
+        System.out.println("Current Client Count- "+ Server.sockets.size());
     }
 
-    @Override
+
     public void run() {
         try{
-            while(true){
-                String message = receiveMessage();
-                if (message.endsWith("Client_wants_to_end_the_connection")) {
-                    message = message.substring(0, message.indexOf('-')) + " has left the Chat!";
-                    for (Client_Handler clientHandler: Server.sockets){
-                        if (!clientHandler.clientName.equals(clientName)) {clientHandler.sendMessage(message);}
+            while(true) {
+                String msg=Receive();
+
+                if(msg.endsWith("Client_wants_to_end_the_connection")) {
+                    msg=msg.substring(0,msg.indexOf('-'))+" has left the Chat!";
+                    for(Client_Handler c:Server.sockets) {
+                        if(!c.client_name.equals(client_name)) c.Send(msg);
                     }
-                    closeStreams();
+                    CloseStreams();
                     break;
                 }
-                for (Client_Handler clientHandler: Server.sockets) {
-                    if (!clientHandler.clientName.equals(clientName)) {clientHandler.sendMessage(message);}
+
+                for(Client_Handler c:Server.sockets) {
+                    if(!c.client_name.equals(client_name))  c.Send(msg);
                 }
             }
         }catch(Exception e){
-            System.out.println("Error: run()");
             e.printStackTrace();
         }
     }
 }
-
