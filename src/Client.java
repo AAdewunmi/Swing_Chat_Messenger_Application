@@ -134,4 +134,16 @@ class Client_SetUp extends JFrame{
         showMessage("\n Your streams are now good to go \n");
     }
 
+    private void whileChatting() throws IOException{
+        while(true){
+            try{
+                message = (String) input.readLine();
+                showMessage("\n" + message);
+            }catch(Exception e){
+                showMessage("Some Error Occurred: whileChatting()");
+                e.printStackTrace();
+            }
+        }
+    }
+
 } // End Client_SetUp
