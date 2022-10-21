@@ -8,7 +8,7 @@ import java.net.Socket;
 
 /**
  * Client Class
- * Client Socket running at port 2020
+ * Client Socket running at port 2030
  * Ngrok Config: Server Address -> "X.tcp.ngrok.io" // Port Number ->
  */
 public class Client {
@@ -29,7 +29,8 @@ class Client_SetUp extends JFrame{
 
     private final JTextField userText;
     private final JTextArea chatWindow;
-    private PrintWriter output;
+    // private PrintWriter output;
+    private BufferedWriter output;
     private BufferedReader input;
     private final String serverIP;
     private Socket connection;
@@ -112,7 +113,7 @@ class Client_SetUp extends JFrame{
     private void connectToServer() throws IOException {
         // Localhost connection
         showMessage("Attention Connection ... \n");
-        connection = new Socket(InetAddress.getByName(serverIP), 2020);
+        connection = new Socket(InetAddress.getByName(serverIP), 2030);
         showMessage("Connected to: " + connection.getInetAddress().getHostName());
 
         // Ngrok connection
@@ -122,13 +123,15 @@ class Client_SetUp extends JFrame{
     }
 
     private void setupStreams() throws IOException{
-        output = new PrintWriter(connection.getOutputStream(), true);
+        // output = new PrintWriter(connection.getOutputStream(), true);
+        output = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
         input = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         showMessage("\n Your streams are now good to go \n");
     }
 
     private void whileChatting() throws IOException{
-        while(true){
+        boolean keepLooping = true;
+        while(keepLooping){
             try{
                 String message = input.readLine();
                 showMessage("\n" + message);
@@ -136,6 +139,7 @@ class Client_SetUp extends JFrame{
                 showMessage("Some Error Occurred: whileChatting()");
                 e.printStackTrace();
             }
+            keepLooping = false;
         }
     }
 
@@ -152,7 +156,8 @@ class Client_SetUp extends JFrame{
 
     private void sendMessage(String message){
         try{
-            output.println(name + " - " + message);
+            // output.println(name + " - " + message);
+            output.write(name + " - " + message);
             showMessage("\n" + name + " - " + message);
         }catch(Exception e){
             chatWindow.append("\n Message not sent, some error occurred!");

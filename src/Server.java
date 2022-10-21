@@ -8,7 +8,7 @@ import java.util.Vector;
 
 /**
  * Server Class
- * Server Socket running at port 2020
+ * Server Socket running at port 2030
  */
 
 public class Server {
@@ -16,7 +16,7 @@ public class Server {
     static Vector<Client_Handler> sockets = new Vector<>();
 
     public static void main(String[] args) throws IOException {
-        ServerSocket socket = new ServerSocket(2020);
+        ServerSocket socket = new ServerSocket(2030);
         int i = 0;
         System.out.println("Server is waiting for Connections!");
         while(true){
